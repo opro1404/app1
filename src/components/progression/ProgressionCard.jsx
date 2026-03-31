@@ -18,12 +18,12 @@ export default function ProgressionCard({ category }) {
     <motion.button
       whileTap={{ scale: 0.94 }}
       onClick={() => navigate(ROUTE[category])}
-      className="flex-1 bg-card border border-border rounded-2xl p-3 flex flex-col items-center gap-2 relative overflow-hidden"
+      className="flex-1 min-w-0 bg-card border border-border rounded-2xl p-3 flex flex-col items-center gap-2 relative overflow-hidden"
     >
       {/* Glow bg */}
       <div className="absolute inset-0 bg-gradient-to-b from-orange/5 to-transparent pointer-events-none" />
 
-      <ProgressionIcon category={category} level={data.level} size="md" />
+      <ProgressionIcon category={category} level={data.level} size="lg" />
 
       <div className="w-full">
         <div className="flex justify-between items-center mb-1">

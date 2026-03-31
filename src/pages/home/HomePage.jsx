@@ -14,13 +14,13 @@ export default function HomePage() {
     <div className="min-h-dvh bg-bg px-4 pt-12 pb-6">
       <GreetingHeader />
 
-      <div className="mt-6">
-        {comebackMode ? <ComebackBanner /> : <StreakBadge />}
-      </div>
-
       <div className="mt-5">
         <p className="text-dim text-xs font-bold uppercase tracking-widest mb-3">Life Levels</p>
         <ProgressionRow />
+      </div>
+
+      <div className="mt-4">
+        {comebackMode ? <ComebackBanner /> : <StreakBadge />}
       </div>
 
       <div className="mt-6">
