@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=1920, height=1080" />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
     <style>
       * {
@@ -10,13 +11,319 @@
         padding: 0;
         box-sizing: border-box;
       }
-      html,
-      body {
+      html, body {
         margin: 0;
         width: 1920px;
         height: 1080px;
         overflow: hidden;
-        background: #000;
+        background: #070B14;
+        font-family: 'DM Sans', sans-serif;
+      }
+
+      /* Background */
+      .bg {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse 1200px 800px at 50% 40%, #0D1829 0%, #070B14 70%);
+      }
+      .bg-glow-red {
+        position: absolute;
+        width: 900px;
+        height: 900px;
+        top: -200px;
+        right: -150px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(200,16,46,0.18) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .bg-glow-blue {
+        position: absolute;
+        width: 700px;
+        height: 700px;
+        bottom: -200px;
+        left: -100px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(29,66,138,0.22) 0%, transparent 70%);
+        pointer-events: none;
+      }
+      .noise {
+        position: absolute;
+        inset: 0;
+        opacity: 0.03;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+        background-size: 256px 256px;
+      }
+
+      /* Glass utility */
+      .glass {
+        background: rgba(255,255,255,0.055);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(255,255,255,0.10);
+        border-radius: 20px;
+      }
+      .glass-red {
+        background: rgba(200,16,46,0.15);
+        backdrop-filter: blur(24px);
+        -webkit-backdrop-filter: blur(24px);
+        border: 1px solid rgba(200,16,46,0.30);
+        border-radius: 20px;
+      }
+
+      /* Scenes — positioned absolutely, full canvas */
+      .scene {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      /* ── SCENE 1 ── */
+      #s1-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+        position: relative;
+      }
+      #s1-badge {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 28px;
+        background: rgba(200,16,46,0.20);
+        border: 1px solid rgba(200,16,46,0.45);
+        border-radius: 40px;
+        margin-bottom: 28px;
+      }
+      #s1-badge-dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: #C8102E;
+        box-shadow: 0 0 8px #C8102E;
+      }
+      #s1-badge-text {
+        font-size: 22px;
+        font-weight: 700;
+        color: rgba(255,255,255,0.9);
+        letter-spacing: 4px;
+        text-transform: uppercase;
+      }
+      #s1-title {
+        font-size: 220px;
+        font-weight: 900;
+        color: #FFFFFF;
+        line-height: 0.85;
+        letter-spacing: -6px;
+        text-transform: uppercase;
+      }
+      #s1-title span.red {
+        color: #C8102E;
+      }
+      #s1-sub {
+        font-size: 34px;
+        font-weight: 400;
+        color: rgba(255,255,255,0.45);
+        letter-spacing: 12px;
+        text-transform: uppercase;
+        margin-top: 18px;
+      }
+      #s1-card {
+        position: absolute;
+        right: -560px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 440px;
+        padding: 36px 40px;
+      }
+      #s1-card-label {
+        font-size: 16px;
+        font-weight: 700;
+        letter-spacing: 4px;
+        color: #C8102E;
+        text-transform: uppercase;
+        margin-bottom: 20px;
+      }
+      #s1-score-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+      }
+      .s1-team {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .s1-team-abbr {
+        font-size: 42px;
+        font-weight: 800;
+        color: #FFFFFF;
+      }
+      .s1-team-name {
+        font-size: 16px;
+        color: rgba(255,255,255,0.45);
+        font-weight: 500;
+      }
+      #s1-vs {
+        font-size: 22px;
+        font-weight: 500;
+        color: rgba(255,255,255,0.25);
+      }
+      .s1-score-val {
+        font-size: 80px;
+        font-weight: 900;
+        color: #FFFFFF;
+        line-height: 1;
+      }
+      #s1-card-footer {
+        margin-top: 20px;
+        padding-top: 20px;
+        border-top: 1px solid rgba(255,255,255,0.08);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      #s1-live-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #C8102E;
+        box-shadow: 0 0 6px #C8102E;
+        flex-shrink: 0;
+      }
+      #s1-card-footer-text {
+        font-size: 18px;
+        color: rgba(255,255,255,0.5);
+        font-weight: 500;
+      }
+
+      /* ── SCENE 2 ── */
+      #s2-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 56px;
+        width: 100%;
+        padding: 0 140px;
+      }
+      #s2-headline {
+        font-size: 72px;
+        font-weight: 800;
+        color: #FFFFFF;
+        text-align: center;
+        line-height: 1;
+      }
+      #s2-headline span.red { color: #C8102E; }
+      #s2-cards {
+        display: flex;
+        gap: 40px;
+        width: 100%;
+      }
+      .s2-card {
+        flex: 1;
+        padding: 48px 48px 52px;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+      .s2-card-icon {
+        width: 64px;
+        height: 64px;
+        border-radius: 16px;
+        background: rgba(200,16,46,0.18);
+        border: 1px solid rgba(200,16,46,0.30);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+      }
+      .s2-card-title {
+        font-size: 38px;
+        font-weight: 800;
+        color: #FFFFFF;
+        line-height: 1.1;
+      }
+      .s2-card-desc {
+        font-size: 22px;
+        color: rgba(255,255,255,0.45);
+        line-height: 1.5;
+      }
+      .s2-stat {
+        margin-top: auto;
+        font-size: 64px;
+        font-weight: 900;
+        color: #C8102E;
+        line-height: 1;
+      }
+      .s2-stat-label {
+        font-size: 18px;
+        color: rgba(255,255,255,0.35);
+        font-weight: 500;
+        margin-top: 4px;
+      }
+
+      /* ── SCENE 3 ── */
+      #s3-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 0;
+      }
+      #s3-eyebrow {
+        font-size: 20px;
+        font-weight: 700;
+        letter-spacing: 6px;
+        color: #C8102E;
+        text-transform: uppercase;
+        margin-bottom: 28px;
+      }
+      #s3-headline {
+        font-size: 130px;
+        font-weight: 900;
+        color: #FFFFFF;
+        line-height: 0.9;
+        text-align: center;
+        letter-spacing: -3px;
+      }
+      #s3-sub {
+        font-size: 30px;
+        color: rgba(255,255,255,0.45);
+        margin-top: 24px;
+        text-align: center;
+        letter-spacing: 1px;
+      }
+      #s3-btn {
+        margin-top: 64px;
+        padding: 28px 96px;
+        border-radius: 60px;
+        font-size: 34px;
+        font-weight: 800;
+        color: #FFFFFF;
+        letter-spacing: 1px;
+        background: #C8102E;
+        border: none;
+        box-shadow: 0 0 60px rgba(200,16,46,0.45), 0 0 120px rgba(200,16,46,0.20);
+        cursor: default;
+      }
+      #s3-tagline {
+        margin-top: 36px;
+        font-size: 20px;
+        color: rgba(255,255,255,0.25);
+        letter-spacing: 3px;
+        text-transform: uppercase;
+      }
+
+      /* Divider line accent */
+      .h-line {
+        width: 80px;
+        height: 3px;
+        background: #C8102E;
+        border-radius: 2px;
+        margin: 0 auto;
       }
     </style>
   </head>
@@ -25,26 +332,150 @@
       id="root"
       data-composition-id="main"
       data-start="0"
-      data-duration="10"
+      data-duration="15"
       data-width="1920"
       data-height="1080"
     >
-      
-      
+      <!-- Persistent background (not a clip) -->
+      <div class="bg"></div>
+      <div class="bg-glow-red"></div>
+      <div class="bg-glow-blue"></div>
+      <div class="noise"></div>
 
-      <!--
-        Add your clips here. Example:
-        <div id="title" class="clip" data-start="0" data-duration="5" data-track-index="1"
-             style="font-size: 64px; color: #fff; padding: 40px">
-          Hello World
+      <!-- ── SCENE 1: Hero [0–5s] ── -->
+      <div id="s1" class="scene clip" data-start="0" data-duration="5" data-track-index="1">
+        <div id="s1-inner">
+          <div id="s1-badge">
+            <div id="s1-badge-dot"></div>
+            <div id="s1-badge-text">Live Now</div>
+          </div>
+          <div id="s1-title">N<span class="red">B</span>A</div>
+          <div id="s1-sub">Official App</div>
         </div>
-      -->
+        <div id="s1-card" class="glass">
+          <div id="s1-card-label">Game in Progress</div>
+          <div id="s1-score-row">
+            <div class="s1-team">
+              <div class="s1-team-abbr">LAL</div>
+              <div class="s1-team-name">Lakers</div>
+            </div>
+            <div>
+              <div id="s1-score-lal" class="s1-score-val" style="text-align:right">98</div>
+            </div>
+            <div id="s1-vs">VS</div>
+            <div>
+              <div id="s1-score-bos" class="s1-score-val">104</div>
+            </div>
+            <div class="s1-team">
+              <div class="s1-team-abbr">BOS</div>
+              <div class="s1-team-name">Celtics</div>
+            </div>
+          </div>
+          <div id="s1-card-footer">
+            <div id="s1-live-dot"></div>
+            <div id="s1-card-footer-text">Q3 · 4:22 remaining</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SCENE 2: Features [5–10s] ── -->
+      <div id="s2" class="scene clip" data-start="5" data-duration="5" data-track-index="1" style="opacity:0;visibility:hidden">
+        <div id="s2-inner">
+          <div id="s2-headline">Everything <span class="red">Basketball.</span></div>
+          <div id="s2-cards">
+            <div id="s2-card1" class="s2-card glass">
+              <div class="s2-card-icon">🏀</div>
+              <div class="s2-card-title">Live Games</div>
+              <div class="s2-card-desc">Every game, every night — in real time.</div>
+              <div>
+                <div class="s2-stat" id="s2-stat1">0</div>
+                <div class="s2-stat-label">games live tonight</div>
+              </div>
+            </div>
+            <div id="s2-card2" class="s2-card glass">
+              <div class="s2-card-icon">⭐</div>
+              <div class="s2-card-title">Top Players</div>
+              <div class="s2-card-desc">Stats, highlights & player tracking.</div>
+              <div>
+                <div class="s2-stat" id="s2-stat2">0</div>
+                <div class="s2-stat-label">active rosters</div>
+              </div>
+            </div>
+            <div id="s2-card3" class="s2-card glass">
+              <div class="s2-card-icon">🎬</div>
+              <div class="s2-card-title">Highlights</div>
+              <div class="s2-card-desc">The best plays, curated for you.</div>
+              <div>
+                <div class="s2-stat" id="s2-stat3">0</div>
+                <div class="s2-stat-label">clips daily</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SCENE 3: CTA [10–15s] ── -->
+      <div id="s3" class="scene clip" data-start="10" data-duration="5" data-track-index="1" style="opacity:0;visibility:hidden">
+        <div id="s3-inner">
+          <div id="s3-eyebrow">The Season Is Live</div>
+          <div id="s3-headline">Watch<br/>Every Game.</div>
+          <div id="s3-sub">Stream live. Follow your team. Never miss a play.</div>
+          <div id="s3-btn">Download the NBA App</div>
+          <div id="s3-tagline">Available on iOS & Android</div>
+        </div>
+      </div>
     </div>
 
     <script>
       window.__timelines = window.__timelines || {};
       const tl = gsap.timeline({ paused: true });
-      // Example: tl.from("#title", { opacity: 0, y: -50, duration: 1 }, 0);
+
+      // ── SCENE 1 entrances ──
+      tl.from("#s1-badge",  { y: -30, autoAlpha: 0, duration: 0.5, ease: "power3.out" }, 0.15)
+        .from("#s1-title",  { y: 80, autoAlpha: 0, duration: 0.7, ease: "power4.out" }, 0.30)
+        .from("#s1-sub",    { y: 30, autoAlpha: 0, duration: 0.5, ease: "power2.out" }, 0.60)
+        .from("#s1-card",   { x: 60, autoAlpha: 0, duration: 0.6, ease: "power3.out" }, 0.50)
+        .from("#s1-card-label",       { autoAlpha: 0, duration: 0.35 }, 0.75)
+        .from("#s1-score-row",        { y: 20, autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 0.85)
+        .from("#s1-card-footer",      { autoAlpha: 0, duration: 0.35 }, 1.10);
+
+      // Live dot pulse (mid-scene activity)
+      tl.to("#s1-badge-dot", { opacity: 0.2, duration: 0.5, ease: "sine.inOut", repeat: 7, yoyo: true }, 0.5)
+        .to("#s1-live-dot",  { opacity: 0.2, duration: 0.5, ease: "sine.inOut", repeat: 7, yoyo: true }, 0.7);
+
+      // ── TRANSITION 1 → 2 (at 4.5s) ──
+      tl.to("#s1", { autoAlpha: 0, duration: 0.35, ease: "power2.in" }, 4.50)
+        .to("#s2", { autoAlpha: 1, duration: 0.35, ease: "power2.out" }, 4.65);
+
+      // ── SCENE 2 entrances ──
+      tl.from("#s2-headline", { y: 50, autoAlpha: 0, duration: 0.55, ease: "power3.out" }, 4.80)
+        .from("#s2-card1",    { y: 60, autoAlpha: 0, duration: 0.55, ease: "power3.out" }, 5.10)
+        .from("#s2-card2",    { y: 60, autoAlpha: 0, duration: 0.55, ease: "power3.out" }, 5.25)
+        .from("#s2-card3",    { y: 60, autoAlpha: 0, duration: 0.55, ease: "power3.out" }, 5.40);
+
+      // Stat counters
+      const stat1 = { val: 0 }, stat2 = { val: 0 }, stat3 = { val: 0 };
+      tl.to(stat1, { val: 12, duration: 1.2, ease: "power2.out",
+        onUpdate: () => { document.querySelector("#s2-stat1").textContent = Math.round(stat1.val); } }, 5.60)
+        .to(stat2, { val: 30, duration: 1.2, ease: "power2.out",
+          onUpdate: () => { document.querySelector("#s2-stat2").textContent = Math.round(stat2.val); } }, 5.70)
+        .to(stat3, { val: 500, duration: 1.4, ease: "power2.out",
+          onUpdate: () => { document.querySelector("#s2-stat3").textContent = Math.round(stat3.val) + "+"; } }, 5.80);
+
+      // ── TRANSITION 2 → 3 (at 9.5s) ──
+      tl.to("#s2", { autoAlpha: 0, duration: 0.35, ease: "power2.in" }, 9.50)
+        .to("#s3", { autoAlpha: 1, duration: 0.35, ease: "power2.out" }, 9.65);
+
+      // ── SCENE 3 entrances ──
+      tl.from("#s3-eyebrow",  { y: -20, autoAlpha: 0, duration: 0.40, ease: "power2.out" }, 9.80)
+        .from("#s3-headline", { y: 70, autoAlpha: 0, duration: 0.65, ease: "power4.out" }, 9.95)
+        .from("#s3-sub",      { y: 30, autoAlpha: 0, duration: 0.45, ease: "power2.out" }, 10.35)
+        .from("#s3-btn",      { scale: 0.82, autoAlpha: 0, duration: 0.55, ease: "back.out(1.7)" }, 10.65)
+        .from("#s3-tagline",  { autoAlpha: 0, duration: 0.35 }, 11.10);
+
+      // Final fade out
+      tl.to("#s3", { autoAlpha: 0, duration: 0.5, ease: "power2.in" }, 14.45);
+
       window.__timelines["main"] = tl;
     </script>
   </body>
